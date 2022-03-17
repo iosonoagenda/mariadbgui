@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import OptionsComponent from "@/components/OptionsComponent";
-
 export default {
   name: 'App',
   data: () => {
@@ -18,7 +16,7 @@ export default {
       trans: {}
     };
   },
-  components: {OptionsComponent},
+  components: {},
   mounted() {
     window.ipcRenderer.on('progress:change', (e, value) => {
       this.progress = value;

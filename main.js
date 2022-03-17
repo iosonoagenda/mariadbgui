@@ -309,7 +309,7 @@ const checkUpdates = () => {
                     configs.checkUpdates = false;
                 }
             }
-        }).catch(err => dialogs.error(err.message));
+        }).catch(err => console.error(err.message));
     }
 };
 const loadConfigs = () => {

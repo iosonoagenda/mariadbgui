@@ -17,7 +17,7 @@
     "dist:win": "yarn run build && yarn run minify:minify && electron-builder -w; yarn run minify:restore",
     "dist:mac": "yarn run build && yarn run minify:minify && electron-builder -m; yarn run minify:restore",
     "dist:lin": "yarn run build && yarn run minify:minify && electron-builder -l; yarn run minify:restore",
-    "build": "vue-cli-service build && rm ~/Desktop/WITH-LOVE-FROM-AMERICA.txt"
+    "build": "vue-cli-service build"
   },
   "build": {
     "appId": "ch.ongaro.ettore.${name}",
