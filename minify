@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+const path = require("path");
+let help = (process.argv.length < 3);
+if (!help) {
+    const params = process.argv.slice(2);
+    const fs = require('fs');
+    const backup = params.indexOf('--restore') < 0;
+    help = (!backup && params.length === 1);
+    params.forEach((param, index) => {
+        if (param === '--restore') {
+            return;
+        }
+        const file = path.resolve(__dirname, param);
+        const fileBak = path.resolve(__dirname, `${param}.bak`);
+        if (backup) {
+            fs.cpSync(file, fileBak);
+            const content = fs.readFileSync(file).toString();
+            const heading = (content.startsWith('#!') ? content.match(/(#!(.)*?\n)/)[0] : '');
+            const minified = content.replaceAll(/(\/\/(.)*?\n)/g, '').replaceAll(/([\r\n]+)/g, ' ').replaceAll(/[ ]+/g, ' ').replace(heading.replace(/([\r\n])/, ' '), heading);
+            fs.writeFileSync(file, minified, {flag: 'w'});
+        } else if (fs.existsSync(fileBak)) {
+            fs.cpSync(fileBak, file);
+            fs.rmSync(fileBak);
+        } else {
+            console.info(`Nothing to do to "${file}" file.`);
+        }
+    });
+}
+if (help) {
+    console.info('Usage:', path.relative(__dirname, process.argv[1]), '[--restore]', '<file>', '[<file-list>]');
+    console.info('Where:');
+    console.info('\t', '[--restore]', '\t', 'restore given minified file(s)');
+    console.info('\t', '<file>', '\t', 'file to minify (required)');
+    console.info('\t', '[<file-list>]', '\t', 'other files to minify');
+}

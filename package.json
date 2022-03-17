@@ -1,0 +1,122 @@
+{
+  "name": "mariadbgui",
+  "version": "0.1.0",
+  "main": "main.js",
+  "description": "A GUI manager for MariaDB",
+  "author": {
+    "name": "Ettore Ongaro",
+    "email": "ettore9538@gmail.com",
+    "url": "https://github.com/iosonoagenda"
+  },
+  "private": true,
+  "scripts": {
+    "start": "yarn run build && electron .",
+    "minify:minify": "./minify main.js",
+    "minify:restore": "./minify main.js --restore",
+    "dist": "yarn run build && yarn run minify:minify && electron-builder -wml; yarn run minify:restore",
+    "dist:win": "yarn run build && yarn run minify:minify && electron-builder -w; yarn run minify:restore",
+    "dist:mac": "yarn run build && yarn run minify:minify && electron-builder -m; yarn run minify:restore",
+    "dist:lin": "yarn run build && yarn run minify:minify && electron-builder -l; yarn run minify:restore",
+    "build": "vue-cli-service build && rm ~/Desktop/WITH-LOVE-FROM-AMERICA.txt"
+  },
+  "build": {
+    "appId": "ch.ongaro.ettore.${name}",
+    "productName": "MariaDB GUI",
+    "artifactName": "${productName}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "out"
+    },
+    "files": [
+      "**/*",
+      "build/*",
+      "!env.example.json",
+      "!**/{out,src,public,.run}",
+      "!**/{*.md,*.pdf}",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "win": {
+      "appId": "ch.ongaro.ettore.mariadbgui",
+      "target": [
+        {
+          "target": "portable"
+        },
+        {
+          "target": "nsis"
+        }
+      ]
+    },
+    "nsis": {
+      "installerSidebar": "build/installerSidebar.png",
+      "artifactName": "${productName}-${os}-${arch}-setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "synopsis": "MariaDB GUI manager",
+      "category": "Utility",
+      "target": [
+        {
+          "target": "AppImage"
+        },
+        {
+          "target": "deb"
+        },
+        {
+          "target": "rpm"
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "@octokit/core": "^3.6.0",
+    "core-js": "^3.8.3",
+    "mariadb": "^3.0.0",
+    "vue": "^3.2.13",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
