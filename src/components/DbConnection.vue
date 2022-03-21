@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="db">
-      <OptionsComponent :options="$root.trans.actions.connection" @action="action"></OptionsComponent>
+      <OptionsComponent :key="optionsKey"
+                        :options="$root.trans.actions.connection"
+                        :visibility="optionsVisibility"
+                        @action="action"/>
     </div>
     <ul class="fields">
       <li v-for="(value, key) in conn" :key="key" class="field">
-        <input v-if="editable" v-model="conn[key]" :type="(typeof value).replace('string', 'text')">
+        <input v-if="editable"
+               v-model="conn[key]"
+               :placeholder="$root.trans.inputs.connection[key]"
+               :type="key !== 'password' ? (typeof value).replace('string', 'text') : 'password'">
         <span v-if="!editable">{{ value }}</span>
       </li>
     </ul>
@@ -26,6 +32,7 @@ export default {
   },
   data: () => {
     return {
+      optionsKey: 0,
       editable: false,
       conn: {
         user: '',
@@ -39,6 +46,7 @@ export default {
     action(which) {
       if (typeof this[which] === 'function') {
         this[which]();
+        this.optionsKey++;
       }
     },
     connect() {
@@ -57,8 +65,18 @@ export default {
       }
     }
   },
+  computed: {
+    optionsVisibility() {
+      const res = {};
+      Object.keys(this.$root.trans.actions.connection).forEach(key => {
+        res[key] = (key !== 'save' ? !this.editable : this.editable);
+      });
+      return res;
+    }
+  },
   mounted() {
     this.editable = (this.file.length === 0);
+    this.optionsKey++;
     if (!this.editable) {
       this.conn = window.ipcRenderer.sendSync('file:read', this.file);
     }

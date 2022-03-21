@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Welcome to MariaDB GUI!</h1>
-    <OptionsComponent :options="$root.trans.actions.home" @action="action"></OptionsComponent>
-    <DbConnection v-for="db in dbs" :key="db" :file="db"></DbConnection>
+    <OptionsComponent :options="$root.trans.actions.home" @action="action"/>
+    <DbConnection v-for="db in dbs" :key="db" :file="db"/>
   </div>
 </template>
 

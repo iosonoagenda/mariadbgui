@@ -1,6 +1,6 @@
 <template>
   <header></header>
-  <RouterView></RouterView>
+  <RouterView/>
   <footer>
     <progress id="progress" :max="100" :value="progress"></progress>
   </footer>
@@ -21,9 +21,7 @@ export default {
     window.ipcRenderer.on('progress:change', (e, value) => {
       this.progress = value;
     });
-    window.ipcRenderer.sendSync('app:trans', (trans) => {
-      this.trans = trans;
-    });
+    this.trans = window.ipcRenderer.sendSync('app:trans');
   }
 }
 </script>

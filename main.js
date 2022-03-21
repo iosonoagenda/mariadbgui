@@ -176,6 +176,14 @@ const trans = {
             title: 'Write file',
         },
     },
+    inputs: {
+        connection: {
+            host: 'Host',
+            password: 'Password',
+            port: 'Port',
+            username: 'Username',
+        }
+    },
     menu: {
         close: 'Close',
         file: 'File',
@@ -439,7 +447,7 @@ app.on('window-all-closed', () => {
     saveConfigs();
     closeDb().then(() => {
         //If app is not running on Mac...
-        if (process.platform !== 'darwin') {
+        if (process.platform !== 'darwin' || DEV_TOOLS === 'true') {
             //...exit app
             app.exit();
         }
@@ -529,7 +537,7 @@ ipcMain.on('file:export', (e) => {
     }
 });
 
-ipcMain.on('file:import', (e, ...params) => {
+ipcMain.on('file:import', () => {
     //Show system open dialog
     const res = dialogs.open(trans.file.import.title);
     //If confirmed...
